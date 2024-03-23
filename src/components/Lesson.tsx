@@ -8,7 +8,6 @@ interface ILessonProps {
 }
 export function Lesson({ title, duration, onPlay }: ILessonProps) {
 
-
     return (
         <button onClick={onPlay} className="flex items-center text-sm text-zinc-400 gap-2">
             <Video size={16} className="text-zinc-500" />
