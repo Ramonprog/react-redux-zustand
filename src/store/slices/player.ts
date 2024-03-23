@@ -57,8 +57,17 @@ const playerSlice = createSlice({
         },
       ],
     },
+    currentLessonIndex: 0,
+    currentModuleIndex: 0,
   },
-  reducers: {},
+  reducers: {
+    play: (state, action) => {
+      state.currentModuleIndex = action.payload[0];
+      state.currentLessonIndex = action.payload[1];
+      return state;
+    },
+  },
 });
 
 export const playerReducer = playerSlice.reducer;
+export const { play } = playerSlice.actions;
