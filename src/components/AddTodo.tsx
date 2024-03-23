@@ -1,13 +1,15 @@
 import { FormEvent, useRef } from "react"
+import { useDispatch } from "react-redux";
+import { addTodo } from "../store";
 
 export function AddTodo() {
-
+    const dispatch = useDispatch()
     const newTodoRef = useRef<HTMLInputElement>(null)
 
     function handleSubmit(event: FormEvent) {
         event.preventDefault()
         if (newTodoRef.current) {
-            console.log(newTodoRef.current.value);
+            dispatch(addTodo(newTodoRef.current.value))
             newTodoRef.current.value = '';
         }
     }
