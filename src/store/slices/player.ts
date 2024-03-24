@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const playerSlice = createSlice({
   name: "player",
@@ -61,13 +61,32 @@ const playerSlice = createSlice({
     currentModuleIndex: 0,
   },
   reducers: {
-    play: (state, action) => {
+    play: (state, action: PayloadAction<[number, number]>) => {
       state.currentModuleIndex = action.payload[0];
       state.currentLessonIndex = action.payload[1];
       return state;
+    },
+    next: (state) => {
+      const currentModule = state.courses.modules[state.currentModuleIndex];
+
+      if (!currentModule) return;
+
+      const nextLessonIndex = state.currentLessonIndex + 1;
+
+      if (nextLessonIndex < currentModule.lessons.length) {
+        state.currentLessonIndex = nextLessonIndex;
+      } else {
+        const nextModuleIndex = state.currentModuleIndex + 1;
+        if (nextModuleIndex < state.courses.modules.length) {
+          state.currentModuleIndex = nextModuleIndex;
+          state.currentLessonIndex = 0;
+        } else {
+          console.log("Não há mais lições para avançar.");
+        }
+      }
     },
   },
 });
 
 export const playerReducer = playerSlice.reducer;
-export const { play } = playerSlice.actions;
+export const { play, next } = playerSlice.actions;
