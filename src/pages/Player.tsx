@@ -3,6 +3,8 @@ import { Header } from "../components/Header"
 import { VideoPlayer } from "../components/Video"
 import { Module } from "../components/Module"
 import { useAppSelector } from "../store"
+import { useCurrentLesson } from "../store/slices/player"
+import { useEffect } from "react"
 
 
 export function Player() {
@@ -10,6 +12,12 @@ export function Player() {
     //o componente vai atualizar
     //no redux extrai apenas a informação que eu quero, o selector só renderiza o componente se mudar essa informação
     //especifica
+
+    const { currentLesson } = useCurrentLesson()
+
+    useEffect(() => {
+        document.title = `Assistindo: ${currentLesson.title}`
+    }, [currentLesson])
 
     const { modules } = useAppSelector(state => state.player.courses)
     return (
