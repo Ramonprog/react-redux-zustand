@@ -2,11 +2,9 @@
 import { Header } from "../components/Header"
 import { VideoPlayer } from "../components/Video"
 import { Module } from "../components/Module"
-import { useAppSelector } from "../store"
-import { start, useCurrentLesson } from "../store/slices/player"
+import { useAppDispatch, useAppSelector } from "../store"
+import { loadCourses, useCurrentLesson } from "../store/slices/player"
 import { useEffect } from "react"
-import { api } from "../lib/axios"
-import { useDispatch } from "react-redux"
 
 
 export function Player() {
@@ -14,22 +12,18 @@ export function Player() {
     //o componente vai atualizar
     //no redux extrai apenas a informação que eu quero, o selector só renderiza o componente se mudar essa informação
     //especifica
-
+    const dispatch = useAppDispatch()
     const { currentLesson } = useCurrentLesson()
-    const dispatch = useDispatch()
-    useEffect(() => {
-        api.get('/courses').then(response => {
-            dispatch(start(response.data))
-
-        })
-
-    }, [])
 
     useEffect(() => {
         if (currentLesson) {
             document.title = `Assistindo: ${currentLesson.title}`
         }
     }, [currentLesson])
+
+    useEffect(() => {
+        dispatch(loadCourses())
+    }, [])
 
     const modules = useAppSelector(state => {
         return state.player.courses?.modules
