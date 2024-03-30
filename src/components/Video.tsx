@@ -1,5 +1,4 @@
 import Player from "react-player";
-import { useAppSelector } from "../store";
 import { useDispatch } from "react-redux";
 import { next, useCurrentLesson } from "../store/slices/player";
 
@@ -11,6 +10,10 @@ export function VideoPlayer() {
     function hendlePlayNext() {
         dispatch(next())
         console.log('chamou')
+    }
+
+    if (!currentLesson) {
+        return null
     }
 
     return (
